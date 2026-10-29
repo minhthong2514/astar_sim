@@ -4,6 +4,7 @@ from matplotlib.collections import LineCollection
 from matplotlib.transforms import Affine2D
 import numpy as np
 from maze import MicromouseMaze, NORTH, EAST, SOUTH, WEST
+from astar_planner import a_star_search
 
 class MazeVisualizer:
     def __init__(self, maze):
@@ -124,12 +125,30 @@ class MazeVisualizer:
         self.ax.set_xlabel("Column (C)", color="white")
         self.ax.set_ylabel("Row (R)", color="white")
 
+    def draw_path(self, path):
+        """Draw the calculated A* path as a connected line."""
+        if not path or len(path) < 2:
+            return
+        
+        path_x = [p[0] for p in path]
+        path_y = [p[1] for p in path]
+        
+        self.ax.plot(path_x, path_y, color='#00ffcc', linewidth=2.5, 
+                     linestyle='-', alpha=0.8, marker='o', markersize=3, zorder=4)
+
     def show(self):
-        """Display the simulation window."""
+        """Display the simulation window with the maze, A* path, and mouse."""
+        path = a_star_search(self.maze)
+        
         self.draw_maze(mouse_pos=self.maze.start, heading='NORTH')
+        
+        if path:
+            self.draw_path(path)
+            print(f"Đã vẽ đường đi thành công với {len(path)} bước!")
+        else:
+            print("Không tìm thấy đường đi!")
+            
         plt.show()
-
-
 if __name__ == "__main__":
     maze = MicromouseMaze(width=16, height=16)
     visualizer = MazeVisualizer(maze)
