@@ -128,18 +128,14 @@ class MicromouseMaze:
         elif dx == -1 and dy == 0:
             return bool(self.walls[cy, cx] & WEST)
 
-        # Diagonal collision checks to prevent corner cutting
-        elif dx == 1 and dy == 1:
-            return bool(self.walls[cy, cx] & (NORTH | EAST)) or \
-                   bool(self.walls[cy + 1, cx] & EAST) or bool(self.walls[cy, cx + 1] & NORTH)
-        elif dx == -1 and dy == 1:
-            return bool(self.walls[cy, cx] & (NORTH | WEST)) or \
-                   bool(self.walls[cy + 1, cx] & WEST) or bool(self.walls[cy, cx - 1] & NORTH)
-        elif dx == 1 and dy == -1:
-            return bool(self.walls[cy, cx] & (SOUTH | EAST)) or \
-                   bool(self.walls[cy - 1, cx] & EAST) or bool(self.walls[cy, cx + 1] & SOUTH)
-        elif dx == -1 and dy == -1:
-            return bool(self.walls[cy, cx] & (SOUTH | WEST)) or \
-                   bool(self.walls[cy - 1, cx] & WEST) or bool(self.walls[cy, cx - 1] & SOUTH)
+        # Diagonal collision checks (Prevent corner cutting safely)
+        elif abs(dx) == 1 and abs(dy) == 1:
+            via_x = (cx + dx, cy)   # intermediate cell: horizontal step first
+            via_y = (cx, cy + dy)   # intermediate cell: vertical step first
+            route_x_open = not self.is_wall_between(current, via_x) and \
+                           not self.is_wall_between(via_x, neighbor)
+            route_y_open = not self.is_wall_between(current, via_y) and \
+                           not self.is_wall_between(via_y, neighbor)
+            return not (route_x_open or route_y_open)
 
         return True

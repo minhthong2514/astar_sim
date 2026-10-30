@@ -8,12 +8,19 @@ The simulation grid and wall structure are based on the following reference maze
 
 ![16x16 Micromouse Maze Map](images/map16x16.jpg)
 
+## Simulation Result
+
+The side-by-side comparison between the Cardinal A* planner (left, green path) and the Diagonal A* planner (right, blue path) is visualized below:
+
+![Simulation Result Comparison](images/result.jpeg)
+
 ## Project Structure
 
-* **maze.py**: Defines the `MicromouseMaze` class. Converts the ASCII maze representation into bitmask wall data and handles wall collision checks between adjacent cells.
-* **astar_planner.py**: Implements the A* search algorithm using a priority queue (`heapq`), Manhattan distance heuristic, and path reconstruction logic via parent map tracking.
-* **simulation.py**: Provides the `MazeVisualizer` class using `matplotlib` to render the grid, walls, Start/Goal regions, mouse icon, and path.
-* **main.py**: The primary entry point that executes the pathfinding algorithm and displays the visual simulation window.
+* **maze.py**: Defines the `MicromouseMaze` class. Converts the ASCII maze representation into bitmask wall data and handles wall and corner collision checks between cells.
+* **astar_cardinal_planner.py**: Implements the 4-connected A* search algorithm using Manhattan distance heuristic.
+* **astar_diagonal_planner.py**: Implements the 8-connected A* search algorithm using Octile/Euclidean-scaled heuristic and corner-cutting prevention logic.
+* **simulation.py**: Provides the `MazeVisualizer` class using `matplotlib` to render the grid, walls, Start/Goal regions, mouse icon, and side-by-side comparison subplots.
+* **main.py**: The primary entry point that executes both pathfinding algorithms and displays the visual simulation window.
 
 ## Requirements and Installation
 

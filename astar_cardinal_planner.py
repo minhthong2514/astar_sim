@@ -13,7 +13,7 @@ def reconstruct_path(came_from, current):
     path.reverse()
     return path
 
-def a_star_search(maze):
+def a_star_cardinal_search(maze):
     start = maze.start
     goals = maze.goals
 
@@ -66,7 +66,7 @@ def a_star_search(maze):
             if neighbor not in g_score or tentative_g < g_score[neighbor]:
                 came_from[neighbor] = current
                 g_score[neighbor] = tentative_g
-                f_score[neighbor] = tentative_g + heuristic(start, goals)
+                f_score[neighbor] = tentative_g + heuristic(neighbor, goals)
                 heapq.heappush(open_set, (f_score[neighbor], tentative_g, neighbor))
 
     # Return none if no path exists
@@ -74,6 +74,6 @@ def a_star_search(maze):
 
 if __name__ == "__main__":
     maze = MicromouseMaze(width=16, height=16)
-    path = a_star_search(maze)
+    path = a_star_cardinal_search(maze)
     print("Found path length:", len(path) if path else "No path found")
     print("Path coordinates:", path)
